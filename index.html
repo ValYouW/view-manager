@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>View Saver</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+
+    <script type="text/javascript">
+        var myApp = angular.module('viewMgrApp', []);
+        myApp.controller('viewMgrAppCtrl', function ($scope, $timeout) {
+            $scope.viewMgrApi = {};
+            $scope.viewMgrApi.onSave = function(data) {
+                console.log(data);
+            };
+
+            $timeout(function() {
+                var model = {
+                    availableFilters: {
+                        country: {
+                            id: 'country',
+                            text: 'Country',
+                            options: [
+                                {id: 'IL', text: 'Israel'},
+                                {id: 'GB', text: 'Great Britain'},
+                                {id: 'US', text: 'United States'}
+                            ]
+                        },
+                        leadStatus: {
+                            id: 'leadStatus',
+                            text: 'Lead Status',
+                            options: [
+                                {id: '0', text: 'Trader'},
+                                {id: '1', text: 'Potential'},
+                                {id: '2', text: 'Non Eligible'}
+                            ]
+                        },
+                        leadReason: {
+                            id: 'leadReason',
+                            text: 'Lead Reason',
+                            options: [
+                                {id: '0', text: 'Meeting'},
+                                {id: '1', text: 'No Answer'},
+                                {id: '2', text: 'Under-Aged'}
+                            ]
+                        }
+                    },
+                    filters: [
+                        {id: 'leadStatus', value: '2'},
+                        {id: 'country', value: 'IL'}
+                    ]
+                };
+
+                $scope.viewMgrApi.loadData(model);
+            }, 200);
+        });
+
+    </script>
+
+    <script src="view-mgr-drv.js"></script>
+</head>
+<body>
+
+<div ng-app="viewMgrApp" ng-controller="viewMgrAppCtrl" style="width: 300px">
+    <pxbo-view-mgr-drv api="viewMgrApi"></pxbo-view-mgr-drv>
+</div>
+
+</body>
+</html>

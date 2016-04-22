@@ -1,0 +1,112 @@
+<style>
+
+    .vm-wrapper {
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .vm-header {
+        border-bottom: 2px solid lightblue;
+        padding-bottom: 5px;
+    }
+
+    .vm-viewNameInput {
+        border: none;
+        border-bottom: 1px solid lightgray;
+    }
+
+    .vm-viewNameInput:focus {
+        outline: none;
+    }
+
+    .vm-tabs {
+        padding-top: 5px;
+        width: 100%;
+        background: #fff;
+        overflow: hidden;
+    }
+
+    .vm-tabs ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .vm-tabs ul li {
+        float: left;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .vm-tabs ul li a {
+        display: block;
+        margin: 0 0 0 1px;
+        padding: 5px 10px;
+        background: #ddd;
+        color: #000;
+        text-decoration: none;
+        line-height: 1.3em;
+    }
+
+    .vm-tabs ul li a:hover {
+        background: #369;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .vm-tabs ul li a.vm-active,
+    .vm-tabs ul li a.vm-active:hover {
+        color: #fff;
+        background: #000;
+        font-weight: bold;
+    }
+
+    .vm-tabs-content {
+        padding-top: 5px;
+    }
+
+    .vm-buttons {
+        padding-top: 5px;
+    }
+
+</style>
+
+<div class="vm-wrapper">
+    <div class="vm-header">
+        <input type="text" ng-model="ctrl.viewName" placeholder="View Name..." class="vm-viewNameInput">
+    </div>
+    <div class="vm-tabs">
+        <ul>
+            <li><a ng-click="ctrl.selectTab(0)" ng-class="{'vm-active': ctrl.selectedTab === 0}">Filters</a></li>
+            <li><a ng-click="ctrl.selectTab(1)" ng-class="{'vm-active': ctrl.selectedTab === 1}">Columns</a></li>
+            <li><a ng-click="ctrl.selectTab(2)" ng-class="{'vm-active': ctrl.selectedTab === 2}">Sorting</a></li>
+        </ul>
+    </div>
+    <div class="vm-tabs-content">
+        <div class="vm-filters-tab" ng-show="ctrl.selectedTab === 0">
+            <div ng-repeat="currFilter in ctrl.model.filters track by $index">
+                <!-- Filters -->
+                <select ng-model="currFilter.id" ng-change="ctrl.onFilterChanged(currFilter)">
+                    <option value="">Please Select...</option>
+                    <option ng-repeat="availFilter in ctrl.model.availableFilters" value="{{availFilter.id}}">{{availFilter.text}}</option>
+                </select>
+                <!-- Filter options -->
+                <select ng-model="currFilter.value" ng-change="ctrl.onFilterOptionChanged(currFilter, $index)">
+                    <option value="">Please Select...</option>
+                    <option ng-repeat="availFilterOption in ctrl.model.availableFilters[currFilter.id].options" value="{{availFilterOption.id}}">{{availFilterOption.text}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="vm-columns-tab" ng-show="ctrl.selectedTab === 1">
+            Columns...
+        </div>
+        <div class="vm-sorting-tab" ng-show="ctrl.selectedTab === 2">
+            Sorting...
+        </div>
+    </div>
+    <div class="vm-buttons">
+        <button ng-click="ctrl.save()">Save</button>
+    </div>
+</div>
