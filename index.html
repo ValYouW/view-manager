@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>View Saver</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
 
     <script type="text/javascript">
         var myApp = angular.module('viewMgrApp', []);
@@ -24,8 +24,8 @@
 
         function getModel() {
 	        return {
-		        availableFilters: {
-			        country: {
+		        availableFilters: [
+			        {
 				        id: 'country',
 				        text: 'Country',
 				        options: [
@@ -34,7 +34,7 @@
 					        {id: 'US', text: 'United States'}
 				        ]
 			        },
-			        leadStatus: {
+			        {
 				        id: 'leadStatus',
 				        text: 'Lead Status',
 				        options: [
@@ -43,7 +43,7 @@
 					        {id: '2', text: 'Non Eligible'}
 				        ]
 			        },
-			        leadReason: {
+			        {
 				        id: 'leadReason',
 				        text: 'Lead Reason',
 				        options: [
@@ -52,7 +52,7 @@
 					        {id: '2', text: 'Under-Aged'}
 				        ]
 			        }
-		        },
+		        ],
 		        filters: [
 			        {id: 'leadStatus', value: '2'},
 			        {id: 'country', value: 'IL'}
@@ -71,10 +71,11 @@
     </script>
 
     <script src="view-mgr-drv.js"></script>
+	<script src="pxbo-combo-drv.js"></script>
 </head>
 <body>
 
-<div ng-app="viewMgrApp" ng-controller="viewMgrAppCtrl" style="width: 300px">
+<div ng-app="viewMgrApp" ng-controller="viewMgrAppCtrl" style="width: 600px">
     <pxbo-view-mgr-drv api="viewMgrApi"></pxbo-view-mgr-drv>
 </div>
 <textarea disabled id="result" style="width: 300px; height: 300px"></textarea>

@@ -60,6 +60,12 @@
 		this.model.filters = this.model.filters || [];
 		this.model.filters.push({id: '', value: ''});
 
+		this.filterOptions = {};
+		for (var i = 0; i < this.model.availableFilters.length; i++) {
+			var f = this.model.availableFilters[i];
+			this.filterOptions[f.id] = f.options;
+		}
+
 		this.model.columns = this.model.columns || [];
 	};
 
