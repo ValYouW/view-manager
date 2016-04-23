@@ -67,6 +67,14 @@
         padding-top: 5px;
     }
 
+    .vm-filters-tab {}
+
+    .vm-columns-tab {}
+
+    .vm-columns-tab .checkbox-wrap {
+	    display: block
+    }
+
     .vm-buttons {
         padding-top: 5px;
     }
@@ -85,10 +93,11 @@
         </ul>
     </div>
     <div class="vm-tabs-content">
+        <!-- FILTERS TAB -->
         <div class="vm-filters-tab" ng-show="ctrl.selectedTab === 0">
             <div ng-repeat="currFilter in ctrl.model.filters track by $index">
                 <!-- Filters -->
-                <select ng-model="currFilter.id" ng-change="ctrl.onFilterChanged(currFilter)">
+                <select id="filters-{{$index}}" ng-model="currFilter.id" ng-change="ctrl.onFilterChanged(currFilter)">
                     <option value="">Please Select...</option>
                     <option ng-repeat="availFilter in ctrl.model.availableFilters" value="{{availFilter.id}}">{{availFilter.text}}</option>
                 </select>
@@ -99,10 +108,20 @@
                 </select>
             </div>
         </div>
+
+	    <!-- COLUMNS TAB -->
         <div class="vm-columns-tab" ng-show="ctrl.selectedTab === 1">
-            Columns...
+	        <label class="checkbox-wrap" ng-repeat="column in ctrl.model.columns track by $index">
+		        <input type="checkbox" value="column" checked>{{ctrl.model.availableColumns[column].text}}
+	        </label>
+
+			<label class="checkbox-wrap" ng-repeat="currColumn in ctrl.model.availableColumns track by $index" ng-show="ctrl.model.columns.indexOf(currColumn.id) < 0">
+				<input type="checkbox" value="currColumn.id">{{currColumn.text}}
+			</label>
         </div>
-        <div class="vm-sorting-tab" ng-show="ctrl.selectedTab === 2">
+
+	    <!-- SORTING TAB -->
+	    <div class="vm-sorting-tab" ng-show="ctrl.selectedTab === 2">
             Sorting...
         </div>
     </div>

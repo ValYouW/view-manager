@@ -43,19 +43,24 @@
 		this.selectedTab = 0;
 		var self = this;
 
+		this.api = this.api || {};
 		this.api.loadData = this.loadData.bind(this);
 	}
 
 	ViewMgrController.$inject = ['$scope'];
 
 	ViewMgrController.prototype.loadData = function(model) {
-		if (!model || !model.availableFilters) {
-			throw new Error('model is missing availableFilters');
+		if (!model || !model.availableFilters || !model.availableColumns) {
+			throw new Error('model is missing availableFilters/availableColumns');
 		}
 
 		this.model = model;
+
+		// Always have an extra empty filter to be able to add new one
 		this.model.filters = this.model.filters || [];
 		this.model.filters.push({id: '', value: ''});
+
+		this.model.columns = this.model.columns || [];
 	};
 
 	ViewMgrController.prototype.selectTab = function(index) {
@@ -67,6 +72,8 @@
 	};
 
 	ViewMgrController.prototype.onFilterOptionChanged = function(filter, index) {
+		// Always have an extra empty filter to be able to add new one
+		// So if this is the last filter we will add a new empty filter
 		if (index !== this.model.filters.length - 1 || !filter.value || !filter.id) {return;}
 		this.model.filters.push({id: '', value: ''});
 	};
@@ -74,10 +81,11 @@
 	ViewMgrController.prototype.save = function() {
 		if (typeof this.api.onSave !== 'function') {return;}
 
-		var results = {};
-		results.filters = this.model.filters.filter(function(f) { return f.id && f.value;});
+		var result = {};
+		result.viewName = this.viewName;
+		result.filters = this.model.filters.filter(function(f) { return f.id && f.value;});
 
-		this.api.onSave(results);
+		this.api.onSave(result);
 	};
 
 	angular.module('viewMgrApp').controller('pxboViewMgrCtrl', ViewMgrController);

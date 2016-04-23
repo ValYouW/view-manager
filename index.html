@@ -11,49 +11,62 @@
         myApp.controller('viewMgrAppCtrl', function ($scope, $timeout) {
             $scope.viewMgrApi = {};
             $scope.viewMgrApi.onSave = function(data) {
-                console.log(data);
+                var resDiv = document.getElementById('result');
+	            resDiv.innerHTML = JSON.stringify(data, null, 2);
+	            //resDiv.innerHTML = JSON.stringify(data, null, 2).replace(/\n/g, '<br />');
             };
 
             $timeout(function() {
-                var model = {
-                    availableFilters: {
-                        country: {
-                            id: 'country',
-                            text: 'Country',
-                            options: [
-                                {id: 'IL', text: 'Israel'},
-                                {id: 'GB', text: 'Great Britain'},
-                                {id: 'US', text: 'United States'}
-                            ]
-                        },
-                        leadStatus: {
-                            id: 'leadStatus',
-                            text: 'Lead Status',
-                            options: [
-                                {id: '0', text: 'Trader'},
-                                {id: '1', text: 'Potential'},
-                                {id: '2', text: 'Non Eligible'}
-                            ]
-                        },
-                        leadReason: {
-                            id: 'leadReason',
-                            text: 'Lead Reason',
-                            options: [
-                                {id: '0', text: 'Meeting'},
-                                {id: '1', text: 'No Answer'},
-                                {id: '2', text: 'Under-Aged'}
-                            ]
-                        }
-                    },
-                    filters: [
-                        {id: 'leadStatus', value: '2'},
-                        {id: 'country', value: 'IL'}
-                    ]
-                };
-
+                var model = getModel();
                 $scope.viewMgrApi.loadData(model);
             }, 200);
         });
+
+        function getModel() {
+	        return {
+		        availableFilters: {
+			        country: {
+				        id: 'country',
+				        text: 'Country',
+				        options: [
+					        {id: 'IL', text: 'Israel'},
+					        {id: 'GB', text: 'Great Britain'},
+					        {id: 'US', text: 'United States'}
+				        ]
+			        },
+			        leadStatus: {
+				        id: 'leadStatus',
+				        text: 'Lead Status',
+				        options: [
+					        {id: '0', text: 'Trader'},
+					        {id: '1', text: 'Potential'},
+					        {id: '2', text: 'Non Eligible'}
+				        ]
+			        },
+			        leadReason: {
+				        id: 'leadReason',
+				        text: 'Lead Reason',
+				        options: [
+					        {id: '0', text: 'Meeting'},
+					        {id: '1', text: 'No Answer'},
+					        {id: '2', text: 'Under-Aged'}
+				        ]
+			        }
+		        },
+		        filters: [
+			        {id: 'leadStatus', value: '2'},
+			        {id: 'country', value: 'IL'}
+		        ],
+		        availableColumns: {
+			        leadStatus: {id: 'leadStatus', text: 'Lead Status'},
+			        leadReason: {id: 'leadReason', text: 'Lead Reason'},
+			        country: {id: 'country', text: 'Country'},
+			        lastLoginDate: {id: 'lastLoginDate', text: 'Last Login Date'},
+			        assignedTo: {id: 'assignedTo', text: 'Assigned To'}
+		        },
+		        columns: ['country', 'assignedTo']
+	        };
+        }
 
     </script>
 
@@ -64,6 +77,6 @@
 <div ng-app="viewMgrApp" ng-controller="viewMgrAppCtrl" style="width: 300px">
     <pxbo-view-mgr-drv api="viewMgrApi"></pxbo-view-mgr-drv>
 </div>
-
+<textarea disabled id="result" style="width: 300px; height: 300px"></textarea>
 </body>
 </html>
