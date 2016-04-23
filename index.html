@@ -17,8 +17,8 @@
             };
 
             $timeout(function() {
-                var model = getModel();
-                $scope.viewMgrApi.loadData(model);
+	            $scope.model = getModel();
+                $scope.viewMgrApi.loadData($scope.model);
             }, 200);
         });
 

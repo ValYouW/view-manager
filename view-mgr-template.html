@@ -102,20 +102,12 @@
             <div class="cmb-filters" ng-repeat="currFilter in ctrl.model.filters track by $index">
                 <!-- Filters -->
 	            <div style="display: inline-block" >
-	            <pxbo-combo-drv items="ctrl.model.availableFilters" selected="currFilter.id" on-change="ctrl.onFilterChanged(currFilter)"></pxbo-combo-drv>
+		            <pxbo-combo-drv items="ctrl.model.availableFilters" selected="currFilter.id" on-change="ctrl.onFilterChanged(currFilter)"></pxbo-combo-drv>
 	            </div>
-                <!--<select id="filters-{{$index}}" ng-model="currFilter.id" ng-change="ctrl.onFilterChanged(currFilter)">-->
-                    <!--<option value="">Please Select...</option>-->
-                    <!--<option ng-repeat="availFilter in ctrl.model.availableFilters" value="{{availFilter.id}}">{{availFilter.text}}</option>-->
-                <!--</select>-->
                 <!-- Filter options -->
 	            <div style="display: inline-block">
-	            <pxbo-combo-drv items="ctrl.filterOptions[currFilter.id]" selected="currFilter.value" on-change="ctrl.onFilterOptionChanged($filter, $index)"></pxbo-combo-drv>
+		            <pxbo-combo-drv items="ctrl.filterOptions[currFilter.id]" selected="currFilter.value" on-change="ctrl.onFilterOptionChanged(currFilter, $index)"></pxbo-combo-drv>
 	            </div>
-		            <!--<select ng-model="currFilter.value" ng-change="ctrl.onFilterOptionChanged(currFilter, $index)">-->
-                    <!--<option value="">Please Select...</option>-->
-                    <!--<option ng-repeat="availFilterOption in ctrl.model.availableFilters[currFilter.id].options" value="{{availFilterOption.id}}">{{availFilterOption.text}}</option>-->
-                <!--</select>-->
             </div>
         </div>
 

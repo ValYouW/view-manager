@@ -30,24 +30,30 @@
 		this.filteredItems = this.items.length;
 
 		var self = this;
-		//this.scope.$watch('selected', function() {
-		//	self.search.text = self.selected;
-		//});
-
-		if (this.selected && this.items) {
-			for (var i = 0; i < this.items.length; ++i) {
-				if (this.items[i].id === this.selected) {
-					this.search.text = this.items[i].text;
+		this.scope.$watch('ctrl.items', function() {
+			self.search.text = '';
+			for (var i = 0; i < self.items.length; ++i) {
+				if (self.items[i].id === self.selected) {
+					self.search.text = self.items[i].text;
+					break;
 				}
 			}
-		}
+		});
+
+		//if (this.selected && this.items) {
+		//	for (var i = 0; i < this.items.length; ++i) {
+		//		if (this.items[i].id === this.selected) {
+		//			this.search.text = this.items[i].text;
+		//		}
+		//	}
+		//}
 	}
 
 	PXBOComboController.prototype.select = function(item) {
 		this.showOpts = false;
 		this.search.text = item.text;
 		this.selected = item.id;
-		this.onChange({'$filter': item});
+		this.onChange({$filter: item});
 	};
 
 	PXBOComboController.prototype.searchChange = function() {

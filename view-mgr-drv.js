@@ -80,7 +80,7 @@
 	ViewMgrController.prototype.onFilterOptionChanged = function(filter, index) {
 		// Always have an extra empty filter to be able to add new one
 		// So if this is the last filter we will add a new empty filter
-		if (index !== this.model.filters.length - 1 || !filter.value || !filter.id) {return;}
+		if (index !== this.model.filters.length - 1 || !filter.id) {return;}
 		this.model.filters.push({id: '', value: ''});
 	};
 
