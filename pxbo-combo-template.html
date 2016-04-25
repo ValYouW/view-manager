@@ -35,6 +35,12 @@
 		background-color: #ccc;
 	}
 
+	.pxcmb-combo-opt {
+		display: inline-block;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
 	.pxcmb-highlighted {
 		background-color: gray;
 	}
@@ -43,15 +49,15 @@
 
 <div class="pxcmb-wrap">
 	<div class="pxcmb-search">
-		<input type="text" placeholder="Select..." ng-model="ctrl.search.text"
+		<input type="text" placeholder="{{ctrl.searchPlaceHolder}}" ng-model="ctrl.search.text"
 		       ng-click="ctrl.showOpts = !ctrl.showOpts;" ng-change="ctrl.searchChange()"
 		       ng-keyup="ctrl.searchKeyUp($event)">
 		<label ng-click="ctrl.showOpts = !ctrl.showOpts;">v</label>
 	</div>
 	<div class="pxcmb-combo-wrap" ng-show="ctrl.showOpts">
-		<div ng-repeat="i in ctrl.items | filter:ctrl.search track by $index" ng-click="ctrl.select(i)"
+		<div ng-repeat="i in ctrl.items | filter:ctrl.search track by $index" ng-click="ctrl.select($event,i)"
 		     ng-class="{'pxcmb-highlighted': $index === ctrl.highlightedIdx}">
-			<label>{{i.text}}</label>
+			<label class="pxcmb-combo-opt"><input type="checkbox" ng-checked="ctrl.selected.indexOf(i.id) >= 0">{{i.text}}</label>
 		</div>
 	</div>
 </div>

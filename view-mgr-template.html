@@ -106,7 +106,7 @@
 	            </div>
                 <!-- Filter options -->
 	            <div style="display: inline-block">
-		            <pxbo-combo-drv items="ctrl.filterOptions[currFilter.id]" selected="currFilter.value" on-change="ctrl.onFilterOptionChanged(currFilter, $index)"></pxbo-combo-drv>
+		            <pxbo-combo-drv items="ctrl.filterOptions[currFilter.id]" multi="true" selected="currFilter.value" on-change="ctrl.onFilterOptionChanged(currFilter, $index)"></pxbo-combo-drv>
 	            </div>
             </div>
         </div>
