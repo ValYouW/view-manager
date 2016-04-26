@@ -30,20 +30,22 @@
 		this.highlightedIdx = -1;
 		this.items = this.items || [];
 		this.filteredItems = this.items;
-		this.multi = !!this.multi;
-
-		if (this.multi) {
-			if (!angular.isArray(this.selected)) {
-				this.selected = [this.selected];
-			}
-
-			this.selected = this.selected.filter(String);
-			this.searchPlaceHolder = this.selected.length + ' selected';
-		} else {
-			this.selected = this.selected || '';
-		}
-
 		var self = this;
+
+		this.scope.$watch('ctrl.multi', function() {
+			self.multi = typeof self.multi === 'boolean' ? self.multi : (self.multi === 'true');
+			if (self.multi) {
+				if (!angular.isArray(self.selected)) {
+					self.selected = [self.selected];
+				}
+
+				self.selected = self.selected.filter(String);
+				self.searchPlaceHolder = self.selected.length + ' selected';
+			} else {
+				self.selected = self.selected || '';
+			}
+		});
+
 		this.scope.$watch('ctrl.items', function() {
 			self.search.text = '';
 			for (var i = 0; i < self.items.length; ++i) {
@@ -64,7 +66,7 @@
 	}
 
 	PXBOComboController.prototype.select = function(e, item) {
-		if (e.target.tagName !== 'INPUT') {return;}
+		if (this.multi && e.target.tagName !== 'INPUT') {return;}
 		this.showOpts = this.multi;
 		if (this.multi) {
 			var index = this.selected.indexOf(item.id);
@@ -103,7 +105,7 @@
 			this.highlightedIdx = Math.max(0, this.highlightedIdx - 1);
 			// Enter
 		} else if (e.keyCode === 13) {
-			this.select(this.filteredItems[this.highlightedIdx]);
+			this.select(e, this.filteredItems[this.highlightedIdx]);
 		}
 	};
 

@@ -57,7 +57,7 @@
 	<div class="pxcmb-combo-wrap" ng-show="ctrl.showOpts">
 		<div ng-repeat="i in ctrl.items | filter:ctrl.search track by $index" ng-click="ctrl.select($event,i)"
 		     ng-class="{'pxcmb-highlighted': $index === ctrl.highlightedIdx}">
-			<label class="pxcmb-combo-opt"><input type="checkbox" ng-checked="ctrl.selected.indexOf(i.id) >= 0">{{i.text}}</label>
+			<label class="pxcmb-combo-opt"><input type="checkbox" ng-if="ctrl.multi" ng-checked="ctrl.selected.indexOf(i.id) >= 0">{{i.text}}</label>
 		</div>
 	</div>
 </div>

@@ -63,7 +63,7 @@
 		this.filterOptions = {};
 		for (var i = 0; i < this.model.availableFilters.length; i++) {
 			var f = this.model.availableFilters[i];
-			this.filterOptions[f.id] = f.options;
+			this.filterOptions[f.id] = {options: f.options, multi: !!f.multi};
 		}
 
 		this.model.columns = this.model.columns || [];
@@ -89,7 +89,9 @@
 
 		var result = {};
 		result.viewName = this.viewName;
-		result.filters = this.model.filters.filter(function(f) { return f.id && f.value;});
+		result.filters = this.model.filters.filter(function(f) {
+			return f.id && (angular.isArray(f.value) ? f.value.length > 0 : f.value);
+		});
 
 		this.api.onSave(result);
 	};
