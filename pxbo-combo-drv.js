@@ -32,17 +32,14 @@
 		this.filteredItems = this.items;
 		var self = this;
 
-		this.scope.$watch('ctrl.multi', function() {
-			self.multi = typeof self.multi === 'boolean' ? self.multi : (self.multi === 'true');
-			if (self.multi) {
+		this.scope.$watch('ctrl.selected', function() {
+			var multi = self.isMulti();
+			if (multi) {
 				if (!angular.isArray(self.selected)) {
-					self.selected = [self.selected];
+					throw new Error('pxboComboDrv: `selected` must be an array');
 				}
 
-				self.selected = self.selected.filter(String);
 				self.searchPlaceHolder = self.selected.length + ' selected';
-			} else {
-				self.selected = self.selected || '';
 			}
 		});
 
@@ -55,20 +52,18 @@
 				}
 			}
 		});
-
-		//if (this.selected && this.items) {
-		//	for (var i = 0; i < this.items.length; ++i) {
-		//		if (this.items[i].id === this.selected) {
-		//			this.search.text = this.items[i].text;
-		//		}
-		//	}
-		//}
 	}
 
+	PXBOComboController.prototype.isMulti = function() {
+		// Default is false
+		return typeof this.multi === 'boolean' ? this.multi : (this.multi === 'true');
+	};
+
 	PXBOComboController.prototype.select = function(e, item) {
-		if (this.multi && e.target.tagName !== 'INPUT') {return;}
-		this.showOpts = this.multi;
-		if (this.multi) {
+		var multi = this.isMulti();
+		if (multi && e.target.tagName !== 'INPUT') {return;}
+		this.showOpts = multi;
+		if (multi) {
 			var index = this.selected.indexOf(item.id);
 			if (index < 0) {
 				this.selected.push(item.id);
@@ -82,7 +77,7 @@
 			this.selected = item.id;
 		}
 
-		this.onChange({$filter: item});
+		this.onChange({$item: item});
 	};
 
 	PXBOComboController.prototype.searchChange = function() {

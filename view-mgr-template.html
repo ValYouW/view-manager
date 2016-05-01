@@ -102,7 +102,7 @@
             <div class="cmb-filters" ng-repeat="currFilter in ctrl.model.filters track by $index">
                 <!-- Filters -->
 	            <div style="display: inline-block" >
-		            <pxbo-combo-drv items="ctrl.model.availableFilters" selected="currFilter.id" on-change="ctrl.onFilterChanged(currFilter)"></pxbo-combo-drv>
+		            <pxbo-combo-drv items="ctrl.model.availableFilters" selected="currFilter.id" on-change="ctrl.onFilterChanged(currFilter, $item)"></pxbo-combo-drv>
 	            </div>
                 <!-- Filter options -->
 	            <div style="display: inline-block">
@@ -113,13 +113,14 @@
 
 	    <!-- COLUMNS TAB -->
         <div class="vm-columns-tab" ng-show="ctrl.selectedTab === 1">
-	        <label class="checkbox-wrap" ng-repeat="column in ctrl.model.columns track by $index">
-		        <input type="checkbox" value="column" checked>{{ctrl.model.availableColumns[column].text}}
-	        </label>
+            <pxbo-combo-drv items="ctrl.model.availableColumns" multi="true" selected="ctrl.model.columns" on-change=""></pxbo-combo-drv>
+	        <!--<label class="checkbox-wrap" ng-repeat="column in ctrl.model.columns track by $index">-->
+		        <!--<input type="checkbox" value="column" checked>{{ctrl.model.availableColumns[column].text}}-->
+	        <!--</label>-->
 
-			<label class="checkbox-wrap" ng-repeat="currColumn in ctrl.model.availableColumns track by $index" ng-show="ctrl.model.columns.indexOf(currColumn.id) < 0">
-				<input type="checkbox" value="currColumn.id">{{currColumn.text}}
-			</label>
+			<!--<label class="checkbox-wrap" ng-repeat="currColumn in ctrl.model.availableColumns track by $index" ng-show="ctrl.model.columns.indexOf(currColumn.id) < 0">-->
+				<!--<input type="checkbox" value="currColumn.id">{{currColumn.text}}-->
+			<!--</label>-->
         </div>
 
 	    <!-- SORTING TAB -->

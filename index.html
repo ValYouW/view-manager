@@ -56,15 +56,21 @@
 		        ],
 		        filters: [
 			        {id: 'leadStatus', value: '2'},
-			        {id: 'country', value: 'IL'}
+			        {id: 'country', value: ['IL', 'GB']}
 		        ],
-		        availableColumns: {
-			        leadStatus: {id: 'leadStatus', text: 'Lead Status'},
-			        leadReason: {id: 'leadReason', text: 'Lead Reason'},
-			        country: {id: 'country', text: 'Country'},
-			        lastLoginDate: {id: 'lastLoginDate', text: 'Last Login Date'},
-			        assignedTo: {id: 'assignedTo', text: 'Assigned To'}
-		        },
+		        availableColumns: [
+			        {id: 'leadStatus', text: 'Lead Status'},
+			        {id: 'leadReason', text: 'Lead Reason'},
+			        {id: 'country', text: 'Country'},
+			        {id: 'lastLoginDate', text: 'Last Login Date'},
+			        {id: 'assignedTo', text: 'Assigned To'},
+					{id: 'taskDate', text: 'Task Date'},
+					{id: 'brand', text: 'Brand Name'},
+					{id: 'expiration', text: 'Exp Date'},
+					{id: 'kycStatus', text: 'KYC Status'},
+					{id: 'kycReason', text: 'KYC Reason'}
+
+		        ],
 		        columns: ['country', 'assignedTo']
 	        };
         }

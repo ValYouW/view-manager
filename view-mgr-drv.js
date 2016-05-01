@@ -34,8 +34,6 @@
 
 	// </editor-fold>
 
-
-
 	// <editor-fold desc="// Controller {...}">
 
 	function ViewMgrController(scope) {
@@ -73,8 +71,8 @@
 		this.selectedTab = index;
 	};
 
-	ViewMgrController.prototype.onFilterChanged = function(filter) {
-		filter.value = '';
+	ViewMgrController.prototype.onFilterChanged = function(filter, newFilter) {
+		filter.value = this.filterOptions[newFilter.id].multi ? [] : '';
 	};
 
 	ViewMgrController.prototype.onFilterOptionChanged = function(filter, index) {
@@ -100,7 +98,5 @@
 
 
 	// </editor-fold>
-
-
 
 })(angular);
