@@ -27,6 +27,10 @@
 		z-index: 100;
 	}
 
+	.pxcmb-combo-wrap.pxcmb-list {
+		position: static;
+	}
+
 	.pxcmb-combo-wrap > div {
 		cursor: pointer;
 	}
@@ -52,12 +56,12 @@
 		<input type="text" placeholder="{{ctrl.searchPlaceHolder}}" ng-model="ctrl.search.text"
 		       ng-click="ctrl.showOpts = !ctrl.showOpts;" ng-change="ctrl.searchChange()"
 		       ng-keyup="ctrl.searchKeyUp($event)">
-		<label ng-click="ctrl.showOpts = !ctrl.showOpts;">v</label>
+		<label ng-if="ctrl.listmode !== 'true'" ng-click="ctrl.showOpts = !ctrl.showOpts;">v</label>
 	</div>
-	<div class="pxcmb-combo-wrap" ng-show="ctrl.showOpts">
+	<div ng-class="['pxcmb-combo-wrap', {'pxcmb-list': ctrl.listmode === 'true'}]" ng-show="ctrl.isOpen()">
 		<div ng-repeat="i in ctrl.items | filter:ctrl.search track by $index" ng-click="ctrl.select($event,i)"
 		     ng-class="{'pxcmb-highlighted': $index === ctrl.highlightedIdx}">
-			<label class="pxcmb-combo-opt"><input type="checkbox" ng-if="ctrl.multi" ng-checked="ctrl.selected.indexOf(i.id) >= 0">{{i.text}}</label>
+			<label class="pxcmb-combo-opt"><input type="checkbox" ng-if="ctrl.isMulti()" ng-checked="ctrl.selected.indexOf(i.id) >= 0">{{i.text}}</label>
 		</div>
 	</div>
 </div>

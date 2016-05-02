@@ -91,6 +91,8 @@
 			return f.id && (angular.isArray(f.value) ? f.value.length > 0 : f.value);
 		});
 
+		result.columns = this.model.columns;
+
 		this.api.onSave(result);
 	};
 

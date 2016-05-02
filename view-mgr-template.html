@@ -113,14 +113,7 @@
 
 	    <!-- COLUMNS TAB -->
         <div class="vm-columns-tab" ng-show="ctrl.selectedTab === 1">
-            <pxbo-combo-drv items="ctrl.model.availableColumns" multi="true" selected="ctrl.model.columns" on-change=""></pxbo-combo-drv>
-	        <!--<label class="checkbox-wrap" ng-repeat="column in ctrl.model.columns track by $index">-->
-		        <!--<input type="checkbox" value="column" checked>{{ctrl.model.availableColumns[column].text}}-->
-	        <!--</label>-->
-
-			<!--<label class="checkbox-wrap" ng-repeat="currColumn in ctrl.model.availableColumns track by $index" ng-show="ctrl.model.columns.indexOf(currColumn.id) < 0">-->
-				<!--<input type="checkbox" value="currColumn.id">{{currColumn.text}}-->
-			<!--</label>-->
+            <pxbo-combo-drv items="ctrl.model.availableColumns" multi="true" listmode="true" selected="ctrl.model.columns" on-change=""></pxbo-combo-drv>
         </div>
 
 	    <!-- SORTING TAB -->

@@ -1,7 +1,7 @@
 /* globals angular */
 (function(angular) {
 
-	function PXBOComboDirective() {
+	function PXBOComboDirective($document) {
 		return {
 			restrict: 'E',
 			controller: 'pxboComboCtrl',
@@ -12,12 +12,27 @@
 				items: '=',
 				selected: '=',
 				onChange: '&',
-				multi: '@'
+				multi: '@',
+				listmode: '@'
+			},
+			link: function(scope, element) {
+
+				$document.bind('click', function(event) {
+					var parent = event.target.parentElement;
+					var clickOnElement = false;
+					while (parent !== null && !clickOnElement) {
+						clickOnElement = (parent === element[0]);
+						parent = parent.parentElement;
+					}
+
+					scope.ctrl.showOpts = clickOnElement;
+					scope.$apply();
+				});
 			}
 		};
 	}
 
-	PXBOComboDirective.$inject = [];
+	PXBOComboDirective.$inject = ['$document'];
 
 	angular.module('viewMgrApp').directive('pxboComboDrv', PXBOComboDirective);
 
@@ -34,7 +49,7 @@
 
 		this.scope.$watch('ctrl.selected', function() {
 			var multi = self.isMulti();
-			if (multi) {
+			if (multi && typeof self.selected !== 'undefined') {
 				if (!angular.isArray(self.selected)) {
 					throw new Error('pxboComboDrv: `selected` must be an array');
 				}
@@ -59,11 +74,17 @@
 		return typeof this.multi === 'boolean' ? this.multi : (this.multi === 'true');
 	};
 
+	PXBOComboController.prototype.isOpen = function() {
+		// Default is false
+		return (typeof this.listmode === 'boolean' ? this.listmode : (this.listmode === 'true')) || this.showOpts;
+	};
+
 	PXBOComboController.prototype.select = function(e, item) {
 		var multi = this.isMulti();
 		if (multi && e.target.tagName !== 'INPUT') {return;}
 		this.showOpts = multi;
 		if (multi) {
+			if (typeof this.selected === 'undefined') {this.selected = [];}
 			var index = this.selected.indexOf(item.id);
 			if (index < 0) {
 				this.selected.push(item.id);
