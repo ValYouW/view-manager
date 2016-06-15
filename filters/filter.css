@@ -1,0 +1,71 @@
+.filter {
+	padding: 0.2em 0.5em;
+	border-bottom: solid 1px silver;
+	color: #3687c4;
+
+	/* Disable selection */
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.filter .title {
+	cursor: pointer;
+	display: inline-block;
+	font-weight: bold;
+	line-height: 2em;
+}
+
+.filter .title:after {
+	font: normal normal normal 14px/1 FontAwesome;
+	padding: 0 0.5em;
+	color: #003468;
+	opacity: 0.5;
+	content: "\f0d7";
+}
+
+.filter .title.collapsed:after {
+	content: "\f0da";
+	opacity: 1;
+}
+
+.filter > ul :checked ~ * { font-weight: bold; }
+
+.filter > ul {
+	font-size: 0.9em;
+	display: table;
+	padding: 0 1em 0.5em;
+	box-sizing: border-box;
+	table-layout: fixed;
+}
+
+.filter > ul > li { display: table-row; }
+.filter > ul > li > * { display: table-cell; }
+.filter ul > li > input {
+	vertical-align: middle;
+	height: 100%;
+	max-height: 1.5em;
+}
+
+.filter .filter-option {
+	height: 1.5em;
+	vertical-align: middle;
+}
+
+.filter .filter-option > * {
+	cursor: pointer;
+	padding-left: 0.2em;
+}
+
+.filter .filter-option .count {
+	cursor: auto;
+	color: #888;
+	padding-left: 0.5em;
+	font-size: 0.8em;
+	font-weight: normal;
+}
+
+.filter ul :checked ~ .filter-option .range { display: inline-table; }

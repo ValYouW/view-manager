@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <title>View Saver</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="filters/filter.css">
+    <link rel="stylesheet" href="filters/filter-list.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 
     <script type="text/javascript">
         var myApp = angular.module('viewMgrApp', []);
@@ -16,13 +20,15 @@
 	            //resDiv.innerHTML = JSON.stringify(data, null, 2).replace(/\n/g, '<br />');
             };
 
+            $scope.viewsMgrModel = getViewsMgrModel();
+            $scope.filtersModel = getFiltersModel();
+
             $timeout(function() {
-	            $scope.model = getModel();
-                $scope.viewMgrApi.loadData($scope.model);
+                $scope.viewMgrApi.loadData($scope.viewsMgrModel);
             }, 200);
         });
 
-        function getModel() {
+        function getViewsMgrModel() {
 	        return {
 		        availableFilters: [
 			        {
@@ -42,7 +48,8 @@
 					        {id: '0', text: 'Trader'},
 					        {id: '1', text: 'Potential'},
 					        {id: '2', text: 'Non Eligible'}
-				        ]
+				        ],
+                        multi: true
 			        },
 			        {
 				        id: 'leadReason',
@@ -55,7 +62,7 @@
 			        }
 		        ],
 		        filters: [
-			        {id: 'leadStatus', value: '2'},
+			        {id: 'leadStatus', value: ['2']},
 			        {id: 'country', value: ['IL', 'GB']}
 		        ],
 		        availableColumns: [
@@ -75,16 +82,59 @@
 	        };
         }
 
+        function getFiltersModel() {
+            return [
+                {
+                    id: 'country',
+                    text: 'Country',
+                    options: [
+                        { id: 'IL', text: 'Israel', count: 10 },
+                        { id: 'GB', text: 'Great Britain', count: 5 },
+                        { id: 'US', text: 'United States', count: 3 }
+                    ],
+                    multi: true
+                },
+                {
+                    id: 'leadStatus',
+                    text: 'Lead Status',
+                    options: [
+                        { id: '0', text: 'Trader', count: 150 },
+                        { id: '1', text: 'Potential', count: 3578 },
+                        { id: '2', text: 'Non Eligible', count: 0 }
+                    ],
+                    multi: true
+                },
+                {
+                    id: 'leadReason',
+                    text: 'Lead Reason',
+                    options: [
+                        { id: '0', text: 'Meeting' },
+                        { id: '1', text: 'No Answer' },
+                        { id: '2', text: 'Under-Aged' }
+                    ]
+                }
+            ];
+        }
+
     </script>
 
     <script src="view-mgr-drv.js"></script>
 	<script src="pxbo-combo-drv.js"></script>
+    <script src="filters/filter-component.js"></script>
+    <script src="filters/filter-list-component.js"></script>
 </head>
 <body>
 
-<div ng-app="viewMgrApp" ng-controller="viewMgrAppCtrl" style="width: 600px">
-    <pxbo-view-mgr-drv api="viewMgrApi"></pxbo-view-mgr-drv>
+<div ng-app="viewMgrApp" ng-controller="viewMgrAppCtrl" style="display: flex; flex-direction: row; justify-content: space-around">
+    <div  style="display: inline-block; width: 400px;">
+        <pxbo-view-mgr-drv api="viewMgrApi"></pxbo-view-mgr-drv>
+    </div>
+    <div style="display: inline-block; vertical-align: top; width: 200px; height: 600px">
+        <pxbo-filter-list filters="filtersModel"></pxbo-filter-list>
+    </div>
+    <div>
+        <textarea disabled id="result" style="width: 300px; height: 300px"></textarea>
+    </div>
 </div>
-<textarea disabled id="result" style="width: 300px; height: 300px"></textarea>
 </body>
 </html>

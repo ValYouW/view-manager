@@ -1,0 +1,17 @@
+<div class="filter">
+	<span class="head">
+        <input type="{{$ctrl.inputType}}" name="{{$ctrl.filter.id}}" value="_ALL_" ng-model="$ctrl.filter.selected" ng-indeterminate="$ctrl.isIndeterminate()" ng-show="!$ctrl.collapsed">
+		<label ng-click="$ctrl.toggleCollapse()" class="title" ng-class="{collapsed: $ctrl.collapsed}">{{$ctrl.filter.text}}</label>
+	</span>
+
+    <ul ng-show="!$ctrl.collapsed">
+        <li ng-repeat="filterOption in $ctrl.filter.options | limitTo:$ctrl.optionsLimit" ng-switch on="$ctrl.filter.multi">
+            <input ng-switch-when="true" type="checkbox" id="{{filterOption.pathId}}" ng-model="filterOption.selected">
+            <input ng-switch-default type="radio" id="{{filterOption.pathId}}" name="{{$ctrl.filter.id}}" ng-value="filterOption.id" ng-model="$ctrl.filter.selected">
+            <div class="filter-option">
+                <label for="{{filterOption.pathId}}">{{filterOption.text}}</label><span class="count" ng-hide="filterOption.count < 0">({{filterOption.count}})</span>
+            </div>
+        </li>
+    </ul>
+    <label ng-click="$ctrl.toggleShowAll()" ng-show="!$ctrl.collapsed">{{$ctrl.showingAll ? 'Less...' : 'More...'}}</label>
+</div>

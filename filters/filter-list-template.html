@@ -1,0 +1,12 @@
+<div class="filter-list">
+    <div class="menu-section">
+        <button class="apply button" ng-click="$ctrl.applyFilters()" ng-show="$ctrl.dirtyFilters">Apply</button>
+        <div class="configurations">
+            <i class="fa fa-times" title="Clear View"></i>
+            <i class="fa fa-floppy-o" title="Save View"></i>
+        </div>
+    </div>
+    <div class="filters">
+        <pxbo-filter ng-repeat="filter in $ctrl.filters" filter="filter" on-change="$ctrl.onFilterChange(id, selection)"></pxbo-filter>
+    </div>
+</div>

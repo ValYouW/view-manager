@@ -1,0 +1,36 @@
+.filter-list {
+	color: #3687c4;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+.filter-list .menu-section {
+	padding: 0 0.5em;
+	display: flex;
+	flex-direction: row;
+}
+
+.filter-list .menu-section .apply {
+	height: 1.5em;
+	line-height: 1em;
+}
+
+.filter-list .menu-section.manual .apply {
+	display: block;
+}
+
+.filter-list .configurations {
+	margin-left: auto;
+	font-size: 1.25em;
+	line-height: 1.5em;
+}
+
+.filter-list .configurations > * {
+	cursor: pointer;
+}
+
+.filter-list .filters {
+	overflow: auto;
+}
