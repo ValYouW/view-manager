@@ -1,10 +1,11 @@
 /* globals angular */
 (function(angular) {
 
-	function FilterModel(id, text, multi, options, selectionState) {
+	function FilterModel(id, text, multi, dataType, options, selectionState) {
 		this.id = id || '';
 		this.text = text || '';
 		this.multi = typeof multi === 'boolean' ? multi : true;
+		this.dataType = dataType || 'String';
 		this.selectionState = selectionState || 'None';
 		this.options = options || [];
 	}
@@ -24,7 +25,7 @@
 			var tmp = [];
 			for (var i = 0; i < this.filters.length; ++i) {
 				var currFilter = this.filters[i];
-				var f = new FilterModel(currFilter.id, currFilter.text, !!currFilter.multi, null, currFilter.selectionState);
+				var f = new FilterModel(currFilter.id, currFilter.text, !!currFilter.multi, currFilter.dataType, null, currFilter.selectionState);
 				if (angular.isArray(currFilter.options) && currFilter.options.length > 1) {
 					angular.merge(f.options, currFilter.options);
 				}
@@ -61,7 +62,7 @@
 		var filters = [];
 		for (var i = 0; i < this.filters.length; ++i) {
 			var currFilter = this.filters[i];
-			var selection = currFilter.options.map(function(o) {return o.selected && o.id;}).filter(Boolean);
+			var selection = currFilter.options.map(function(o) {return o.selected && {id: o.id, value: o.value};}).filter(Boolean);
 			if (selection.length > 0) {
 				filters.push({id: currFilter.id, selection: selection});
 			}

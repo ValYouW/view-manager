@@ -20,6 +20,7 @@
 		if (typeof changes.filter !== 'undefined' && this.filter) {
 			this.filter.multi = !!this.filter.multi;
 			this.inputType = this.filter.multi ? 'checkbox' : 'radio';
+			this.filter.dataType = this.filter.dataType || 'String';
 
 			// Make sure we have valid options array
 			if (!angular.isArray(this.filter.options)) {

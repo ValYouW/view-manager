@@ -1,0 +1,17 @@
+.filter-option-range {
+	font-weight: normal;
+}
+
+.filter-option-range > * {
+	display: table-row;
+	padding: 0.2em 0;
+}
+
+.filter-option-range input { max-width: 7em; }
+
+.filter-option-range > div > :first-child { padding: 0.5em 0.5em 0.5em 0; }
+
+.filter-option-range > div > * {
+	box-sizing: border-box;
+	display: table-cell;
+}
