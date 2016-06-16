@@ -92,30 +92,32 @@
                 {
                     id: 'country',
                     text: 'Country',
+                    multi: true,
                     options: [
-                        { id: 'IL', text: 'Israel', count: 10, selected: true },
+                        { id: 'IL', text: 'Israel', count: 10 },
                         { id: 'GB', text: 'Great Britain', count: 5 },
                         { id: 'US', text: 'United States', count: 3 }
-                    ],
-                    multi: true
+                    ]
                 },
                 {
                     id: 'leadStatus',
                     text: 'Lead Status',
+                    multi: true,
                     options: [
                         { id: '0', text: 'Trader', count: 150 },
                         { id: '1', text: 'Potential', count: 3578 },
                         { id: '2', text: 'Non Eligible', count: 0 }
-                    ],
-                    multi: true
+                    ]
                 },
                 {
-                    id: 'leadReason',
-                    text: 'Lead Reason',
+                    id: 'lastLoginDate',
+                    text: 'Last Login Date',
+                    multi: false,
                     options: [
-                        { id: '0', text: 'Meeting' },
-                        { id: '1', text: 'No Answer', selected: false },
-                        { id: '2', text: 'Under-Aged' }
+                        { id: 'Today' },
+                        { id: 'Yesterday'},
+                        { id: 'Last 7 Days' },
+                        { id: 'Custom', value: {} }
                     ]
                 }
             ];
@@ -125,8 +127,9 @@
 
     <script src="view-mgr-drv.js"></script>
 	<script src="pxbo-combo-drv.js"></script>
-    <script src="filters/filter-component.js"></script>
-    <script src="filters/filter-list-component.js"></script>
+    <script src="filters/filter.component.js"></script>
+    <script src="filters/filter-list.component.js"></script>
+    <script src="filters/filter-option-range.component.js"></script>
 </head>
 <body>
 
@@ -138,7 +141,7 @@
         <pxbo-filter-list filters="filtersModel" on-change="filtersChanged(filters)"></pxbo-filter-list>
     </div>
     <div>
-        <textarea disabled id="result" style="width: 300px; height: 300px"></textarea>
+        <textarea disabled id="result" style="width: 300px; height: 500px"></textarea>
     </div>
 </div>
 </body>

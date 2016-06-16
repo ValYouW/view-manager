@@ -12,6 +12,10 @@
 	user-select: none;
 }
 
+.filter .head input {
+	cursor: pointer;
+}
+
 .filter .title {
 	cursor: pointer;
 	display: inline-block;
@@ -34,12 +38,15 @@
 
 .filter > ul :checked ~ * { font-weight: bold; }
 
+/*.filter ul :checked ~ .filter-option .range { display: inline-table; }*/
+
 .filter > ul {
 	font-size: 0.9em;
 	display: table;
 	padding: 0 1em 0.5em;
 	box-sizing: border-box;
 	table-layout: fixed;
+	margin: 0;
 }
 
 .filter > ul > li { display: table-row; }
@@ -53,11 +60,12 @@
 .filter .filter-option {
 	height: 1.5em;
 	vertical-align: middle;
+	padding-left: 0.2em;
 }
 
-.filter .filter-option > * {
+.filter .filter-option label,
+.filter .filter-option input {
 	cursor: pointer;
-	padding-left: 0.2em;
 }
 
 .filter .filter-option .count {
@@ -68,4 +76,6 @@
 	font-weight: normal;
 }
 
-.filter ul :checked ~ .filter-option .range { display: inline-table; }
+.filter .less-more {
+	cursor: pointer;
+}

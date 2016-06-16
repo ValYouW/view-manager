@@ -6,12 +6,13 @@
 
     <ul ng-show="!$ctrl.collapsed">
         <li ng-repeat="filterOption in $ctrl.filter.options | limitTo:$ctrl.optionsLimit" ng-switch on="$ctrl.filter.multi">
-            <input ng-switch-when="true" type="checkbox" id="{{filterOption.pathId}}" ng-model="filterOption.selected">
-            <input ng-switch-default type="radio" id="{{filterOption.pathId}}" name="{{$ctrl.filter.id}}" ng-value="filterOption.id" ng-model="$ctrl.filter.selected">
             <div class="filter-option">
+                <input ng-switch-when="true" type="checkbox" id="{{filterOption.pathId}}" ng-model="filterOption.selected">
+                <input ng-switch-default type="radio" id="{{filterOption.pathId}}" name="{{$ctrl.filter.id}}" ng-value="filterOption.id" ng-model="$ctrl.filter.selected">
                 <label for="{{filterOption.pathId}}">{{filterOption.text}}</label><span class="count" ng-hide="filterOption.count < 0">({{filterOption.count}})</span>
+                <!--<pxbo-filter-option-text filter-option="filterOption"></pxbo-filter-option-text>-->
             </div>
         </li>
     </ul>
-    <label ng-click="$ctrl.toggleShowAll()" ng-show="!$ctrl.collapsed">{{$ctrl.showingAll ? 'Less...' : 'More...'}}</label>
+    <label class="less-more" ng-click="$ctrl.toggleShowAll()" ng-show="!$ctrl.collapsed">{{$ctrl.showingAll ? 'Less...' : 'More...'}}</label>
 </div>

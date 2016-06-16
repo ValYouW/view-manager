@@ -30,6 +30,9 @@
 			for (var i = 0; i < this.filter.options.length; ++i) {
 				var opt = this.filter.options[i];
 
+				// Use the id as text if it's missing
+				opt.text = opt.text || opt.id;
+
 				// Add a "pathId" to the option which includes the filter id and option id (to create a unique id for the input element)
 				opt.pathId = this.filter.id + '_' + opt.id;
 				opt.selected = opt.selected || false;
@@ -116,7 +119,7 @@
 			onChange: '&'
 		},
 		controller: FilterController,
-		templateUrl: 'filters/filter-template.html'
+		templateUrl: 'filters/filter.html'
 	});
 
 	angular.module('viewMgrApp').directive('ngIndeterminate', function($compile) {

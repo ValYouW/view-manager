@@ -76,7 +76,7 @@
 			onChange: '&'
 		},
 		controller: FilterListController,
-		templateUrl: 'filters/filter-list-template.html'
+		templateUrl: 'filters/filter-list.html'
 	});
 
 })(angular);
