@@ -23,6 +23,11 @@
             $scope.viewsMgrModel = getViewsMgrModel();
             $scope.filtersModel = getFiltersModel();
 
+            $scope.filtersChanged = function(data) {
+                var resDiv = document.getElementById('result');
+                resDiv.innerHTML = JSON.stringify(data, null, 2);
+            };
+
             $timeout(function() {
                 $scope.viewMgrApi.loadData($scope.viewsMgrModel);
             }, 200);
@@ -88,7 +93,7 @@
                     id: 'country',
                     text: 'Country',
                     options: [
-                        { id: 'IL', text: 'Israel', count: 10 },
+                        { id: 'IL', text: 'Israel', count: 10, selected: true },
                         { id: 'GB', text: 'Great Britain', count: 5 },
                         { id: 'US', text: 'United States', count: 3 }
                     ],
@@ -109,7 +114,7 @@
                     text: 'Lead Reason',
                     options: [
                         { id: '0', text: 'Meeting' },
-                        { id: '1', text: 'No Answer' },
+                        { id: '1', text: 'No Answer', selected: false },
                         { id: '2', text: 'Under-Aged' }
                     ]
                 }
@@ -130,7 +135,7 @@
         <pxbo-view-mgr-drv api="viewMgrApi"></pxbo-view-mgr-drv>
     </div>
     <div style="display: inline-block; vertical-align: top; width: 200px; height: 600px">
-        <pxbo-filter-list filters="filtersModel"></pxbo-filter-list>
+        <pxbo-filter-list filters="filtersModel" on-change="filtersChanged(filters)"></pxbo-filter-list>
     </div>
     <div>
         <textarea disabled id="result" style="width: 300px; height: 300px"></textarea>
