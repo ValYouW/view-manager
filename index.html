@@ -15,12 +15,12 @@
 
     <script type="text/javascript">
         var myApp = angular.module('viewMgrApp', []);
-        myApp.controller('viewMgrAppCtrl', function ($scope, $timeout) {
+        myApp.controller('viewMgrAppCtrl', function($scope, $timeout) {
             $scope.viewMgrApi = {};
             $scope.viewMgrApi.onSave = function(data) {
                 var resDiv = document.getElementById('result');
-	            resDiv.innerHTML = JSON.stringify(data, null, 2);
-	            //resDiv.innerHTML = JSON.stringify(data, null, 2).replace(/\n/g, '<br />');
+                resDiv.innerHTML = JSON.stringify(data, null, 2);
+                //resDiv.innerHTML = JSON.stringify(data, null, 2).replace(/\n/g, '<br />');
             };
 
             $scope.viewsMgrModel = getViewsMgrModel();
@@ -39,62 +39,62 @@
         });
 
         function getViewsMgrModel() {
-	        return {
-		        availableFilters: [
-			        {
-				        id: 'country',
-				        text: 'Country',
-				        options: [
-					        {id: 'IL', text: 'Israel'},
-					        {id: 'GB', text: 'Great Britain'},
-					        {id: 'US', text: 'United States'}
-				        ],
-						multi: true
-			        },
-			        {
-				        id: 'leadStatus',
-				        text: 'Lead Status',
-				        options: [
-					        {id: '0', text: 'Trader'},
-					        {id: '1', text: 'Potential'},
-					        {id: '2', text: 'Non Eligible'}
-				        ],
+            return {
+                availableFilters: [
+                    {
+                        id: 'country',
+                        text: 'Country',
+                        options: [
+                            { id: 'IL', text: 'Israel' },
+                            { id: 'GB', text: 'Great Britain' },
+                            { id: 'US', text: 'United States' }
+                        ],
                         multi: true
-			        },
-			        {
-				        id: 'leadReason',
-				        text: 'Lead Reason',
-				        options: [
-					        {id: '0', text: 'Meeting'},
-					        {id: '1', text: 'No Answer'},
-					        {id: '2', text: 'Under-Aged'}
-				        ]
-			        }
-		        ],
-		        filters: [
-			        {id: 'leadStatus', value: ['2']},
-			        {id: 'country', value: ['IL', 'GB']}
-		        ],
-		        availableColumns: [
-			        {id: 'leadStatus', text: 'Lead Status'},
-			        {id: 'leadReason', text: 'Lead Reason'},
-			        {id: 'country', text: 'Country'},
-			        {id: 'lastLoginDate', text: 'Last Login Date'},
-			        {id: 'assignedTo', text: 'Assigned To'},
-					{id: 'taskDate', text: 'Task Date'},
-					{id: 'brand', text: 'Brand Name'},
-					{id: 'expiration', text: 'Exp Date'},
-					{id: 'kycStatus', text: 'KYC Status'},
-					{id: 'kycReason', text: 'KYC Reason'}
+                    },
+                    {
+                        id: 'leadStatus',
+                        text: 'Lead Status',
+                        options: [
+                            { id: '0', text: 'Trader' },
+                            { id: '1', text: 'Potential' },
+                            { id: '2', text: 'Non Eligible' }
+                        ],
+                        multi: true
+                    },
+                    {
+                        id: 'leadReason',
+                        text: 'Lead Reason',
+                        options: [
+                            { id: '0', text: 'Meeting' },
+                            { id: '1', text: 'No Answer' },
+                            { id: '2', text: 'Under-Aged' }
+                        ]
+                    }
+                ],
+                filters: [
+                    { id: 'leadStatus', value: ['2'] },
+                    { id: 'country', value: ['IL', 'GB'] }
+                ],
+                availableColumns: [
+                    { id: 'leadStatus', text: 'Lead Status' },
+                    { id: 'leadReason', text: 'Lead Reason' },
+                    { id: 'country', text: 'Country' },
+                    { id: 'lastLoginDate', text: 'Last Login Date' },
+                    { id: 'assignedTo', text: 'Assigned To' },
+                    { id: 'taskDate', text: 'Task Date' },
+                    { id: 'brand', text: 'Brand Name' },
+                    { id: 'expiration', text: 'Exp Date' },
+                    { id: 'kycStatus', text: 'KYC Status' },
+                    { id: 'kycReason', text: 'KYC Reason' }
 
-		        ],
-		        columns: ['country', 'assignedTo']
-	        };
+                ],
+                columns: ['country', 'assignedTo']
+            };
         }
 
         function getFiltersModel() {
-            return [
-                {
+            return {
+                country: {
                     id: 'country',
                     text: 'Country',
                     multi: true,
@@ -105,7 +105,7 @@
 
                     }
                 },
-                {
+                leadStatus: {
                     id: 'leadStatus',
                     text: 'Lead Status',
                     multi: true,
@@ -113,9 +113,9 @@
                         0: { id: '0', text: 'Trader', count: 150 },
                         1: { id: '1', text: 'Potential', count: 3578 },
                         2: { id: '2', text: 'Non Eligible', count: 0 }
-                }
+                    }
                 },
-                {
+                BALANCE: {
                     id: 'BALANCE',
                     text: 'Balance',
                     multi: false,
@@ -127,7 +127,7 @@
                         Custom: { id: 'Custom', type: 'Range', value: { from: null, to: null } }
                     }
                 },
-                {
+                USER_CREATE_DATE: {
                     id: 'USER_CREATE_DATE',
                     text: 'User Creation',
                     multi: false,
@@ -139,7 +139,7 @@
                         'Custom': { id: 'Custom', type: 'Range', value: { from: '', to: '' } }
                     }
                 }
-            ];
+            };
         }
 
         function getChipsModel() {
@@ -153,7 +153,7 @@
                     var opt = filter.options[j];
 
                     if (opt.selected) {
-                        res.push({id: filter.id, text: opt.text || opt.id });
+                        res.push({ id: filter.id, text: opt.text || opt.id });
                     }
                 }
             }
@@ -164,7 +164,7 @@
     </script>
 
     <script src="view-mgr-drv.js"></script>
-	<script src="pxbo-combo-drv.js"></script>
+    <script src="pxbo-combo-drv.js"></script>
     <script src="filters/filter.component.js"></script>
     <script src="filters/filter-list.component.js"></script>
     <script src="filters/filter-option-range.component.js"></script>

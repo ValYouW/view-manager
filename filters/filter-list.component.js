@@ -22,9 +22,9 @@
 		// Check if the 'filters' binding has changed
 		if (typeof changes.filters !== 'undefined' && this.filters) {
 			// Clone the filters array, we don't want to hold reference to the original object
-			var tmp = [];
-			for (var i = 0; i < this.filters.length; ++i) {
-				var currFilter = this.filters[i];
+			var tmp = {};
+			for (var filterId in this.filters) {
+				var currFilter = this.filters[filterId];
 				var f = new FilterModel(currFilter.id, currFilter.text, !!currFilter.multi, currFilter.dataType, null, currFilter.selectionState);
 
 				// Clone options
@@ -32,7 +32,7 @@
 					angular.merge(f.options, currFilter.options);
 				}
 
-				tmp.push(f);
+				tmp[filterId] = f;
 			}
 
 			this.filters = tmp;
@@ -62,8 +62,8 @@
 
 		// Create a list of active filters and raise event
 		var filters = [];
-		for (var i = 0; i < this.filters.length; ++i) {
-			var currFilter = this.filters[i];
+		for (var filterId in this.filters) {
+			var currFilter = this.filters[filterId];
 			var selection = [];
 			for (var optId in currFilter.options) {
 				if (currFilter.options[optId].selected) {
