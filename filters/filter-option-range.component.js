@@ -17,7 +17,7 @@
 				throw new Error('filter-option-range can accept only `Date` and `Number` types, got: ' + this.type);
 			}
 
-			this.inputType = this.type === 'Number' ? 'number' : 'text';
+			this.inputType = this.type === 'Number' ? 'number' : 'date';
 		}
 	};
 

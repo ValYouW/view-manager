@@ -121,6 +121,18 @@
                         { id: '5000-20000' },
                         { id: 'Custom', type: 'Range', value: {from: null, to: null} }
                     ]
+                },
+                {
+                    id: 'USER_CREATE_DATE',
+                    text: 'User Creation',
+                    multi: false,
+                    dataType: 'Date',
+                    options: [
+                        { id: 'yesterday', text: 'Yesterday' },
+                        { id: 'lat7Days', text: 'Last 7 Days'},
+                        { id: 'lastMonth', text: 'Last Month' },
+                        { id: 'Custom', type: 'Range', value: {from: '', to: ''} }
+                    ]
                 }
             ];
         }
@@ -136,10 +148,10 @@
 <body>
 
 <div ng-app="viewMgrApp" ng-controller="viewMgrAppCtrl" style="display: flex; flex-direction: row; justify-content: space-around">
-    <div  style="display: inline-block; width: 400px;">
+    <div style="display: inline-block; width: 400px;">
         <pxbo-view-mgr-drv api="viewMgrApi"></pxbo-view-mgr-drv>
     </div>
-    <div style="display: inline-block; vertical-align: top; width: 200px; height: 600px">
+    <div style="display: inline-block; vertical-align: top; width: 250px; height: 600px">
         <pxbo-filter-list filters="filtersModel" on-change="filtersChanged(filters)"></pxbo-filter-list>
     </div>
     <div>
