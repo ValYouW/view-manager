@@ -22,14 +22,14 @@
 			this.inputType = this.filter.multi ? 'checkbox' : 'radio';
 			this.filter.dataType = this.filter.dataType || 'String';
 
-			// Make sure we have valid options array
-			if (!angular.isArray(this.filter.options)) {
-				this.filter.options = [];
+			// Make sure we have options object
+			if (typeof this.filter.options !== 'object' || !this.filter.options) {
+				this.filter.options = {};
 			}
 
-			// Normalize the options
-			for (var i = 0; i < this.filter.options.length; ++i) {
-				var opt = this.filter.options[i];
+			// Normalize options
+			for (var optId in this.filter.options) {
+				var opt = this.filter.options[optId];
 
 				// Use the id as text if it's missing
 				opt.text = opt.text || opt.id;
@@ -63,17 +63,17 @@
 
 	FilterController.prototype.selectionChanged = function(e) {
 		var selection = [];
+		var optId;
 
 		// Checkboxes
 		if (this.filter.multi) {
 			// Check if this is the "ALL" checkbox
 			if (e.target && e.target.value === '_ALL_') {
-				// In this "map" function we set each option state to the "ALL" checkbox state, and return either the "id" of a selected
-				// option OR "false", then we filter all the "false" boolean out so the final result is a list of selected ids.
-				selection = this.filter.options.map(function(o) {
-					o.selected = e.target.checked;
-					return o.selected && o.id;
-				}).filter(Boolean);
+				// Set each option state to the "ALL" checkbox state and put it in the `selection` array if it is selected.
+				for (optId in this.filter.options) {
+					this.filter.options[optId].selected = e.target.checked;
+					if (this.filter.options[optId].selected) { selection.push(optId); }
+				}
 
 			// A regular option checkbox
 			} else {
@@ -86,17 +86,18 @@
 					this.filter.selected = this.filter.options[0] && this.filter.options[0].selected;
 				}
 
-				selection = this.filter.options.map(function(o) { return o.selected && o.id;}).filter(Boolean);
+				for (optId in this.filter.options) {
+					if (this.filter.options[optId].selected) { selection.push(optId); }
+				}
 			}
 
 		// Radios
 		} else {
 			// Need to update the selected option properties according to the radio selection (which is saved on this.filter.selected)
-			var self = this;
-			selection = this.filter.options.map(function(o) {
-				o.selected = self.filter.selected === o.id;
-				return o.selected && o.id;
-			}).filter(Boolean);
+			for (optId in this.filter.options) {
+				this.filter.options[optId].selected = (this.filter.selected === this.filter.options[optId].id);
+				if (this.filter.options[optId].selected) { selection.push(optId); }
+			}
 		}
 
 		if (typeof this.onChange === 'function') {
@@ -105,8 +106,16 @@
 	};
 
 	FilterController.prototype.isIndeterminate = function() {
-		for (var i = 1; i < this.filter.options.length; ++i) {
-			if (this.filter.options[i].selected !== this.filter.options[0].selected) {
+		var firstSelected;
+		var i = 0;
+		for (var optId in this.filter.options) {
+			if (i === 0) {
+				firstSelected = this.filter.options[optId].selected;
+				++i;
+				continue;
+			}
+
+			if (this.filter.options[optId].selected !== firstSelected) {
 				return true;
 			}
 		}

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="filters/filter-list.css">
     <link rel="stylesheet" href="filters/filter-option-range.css">
 
+    <link rel="stylesheet" href="chips/chips.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 
     <script type="text/javascript">
@@ -23,10 +25,12 @@
 
             $scope.viewsMgrModel = getViewsMgrModel();
             $scope.filtersModel = getFiltersModel();
+            $scope.chipsModel = getChipsModel($scope.filtersModel);
 
             $scope.filtersChanged = function(data) {
                 var resDiv = document.getElementById('result');
                 resDiv.innerHTML = JSON.stringify(data, null, 2);
+                $scope.chipsModel = getChipsModel(data);
             };
 
             $timeout(function() {
@@ -94,47 +98,67 @@
                     id: 'country',
                     text: 'Country',
                     multi: true,
-                    options: [
-                        { id: 'IL', text: 'Israel', count: 10 },
-                        { id: 'GB', text: 'Great Britain', count: 5 },
-                        { id: 'US', text: 'United States', count: 3 }
-                    ]
+                    options: {
+                        'IL': { id: 'IL', text: 'Israel', count: 10, selected: true },
+                        'GB': { id: 'GB', text: 'Great Britain', count: 5 },
+                        'US': { id: 'US', text: 'United States', count: 3, selected: true }
+
+                    }
                 },
                 {
                     id: 'leadStatus',
                     text: 'Lead Status',
                     multi: true,
-                    options: [
-                        { id: '0', text: 'Trader', count: 150 },
-                        { id: '1', text: 'Potential', count: 3578 },
-                        { id: '2', text: 'Non Eligible', count: 0 }
-                    ]
+                    options: {
+                        0: { id: '0', text: 'Trader', count: 150 },
+                        1: { id: '1', text: 'Potential', count: 3578 },
+                        2: { id: '2', text: 'Non Eligible', count: 0 }
+                }
                 },
                 {
                     id: 'BALANCE',
                     text: 'Balance',
                     multi: false,
                     dataType: 'Number',
-                    options: [
-                        { id: '0-1000' },
-                        { id: '1000-5000'},
-                        { id: '5000-20000' },
-                        { id: 'Custom', type: 'Range', value: {from: null, to: null} }
-                    ]
+                    options: {
+                        '0-1000': { id: '0-1000' },
+                        '1000-5000': { id: '1000-5000' },
+                        '5000-20000': { id: '5000-20000' },
+                        Custom: { id: 'Custom', type: 'Range', value: { from: null, to: null } }
+                    }
                 },
                 {
                     id: 'USER_CREATE_DATE',
                     text: 'User Creation',
                     multi: false,
                     dataType: 'Date',
-                    options: [
-                        { id: 'yesterday', text: 'Yesterday' },
-                        { id: 'lat7Days', text: 'Last 7 Days'},
-                        { id: 'lastMonth', text: 'Last Month' },
-                        { id: 'Custom', type: 'Range', value: {from: '', to: ''} }
-                    ]
+                    options: {
+                        'yesterday': { id: 'yesterday', text: 'Yesterday' },
+                        'lat7Days': { id: 'lat7Days', text: 'Last 7 Days', selected: true },
+                        'lastMonth': { id: 'lastMonth', text: 'Last Month' },
+                        'Custom': { id: 'Custom', type: 'Range', value: { from: '', to: '' } }
+                    }
                 }
             ];
+        }
+
+        function getChipsModel() {
+            var filters = getFiltersModel();
+            var res = [];
+            for (var i = 0; i < filters.length; ++i) {
+                var filter = filters[i];
+
+                // Check if any option is selected
+                for (var j = 0; j < filter.options.length; ++j) {
+                    var opt = filter.options[j];
+
+                    if (opt.selected) {
+                        res.push({id: filter.id, text: opt.text || opt.id });
+                    }
+                }
+            }
+
+            return res;
         }
 
     </script>
@@ -144,6 +168,8 @@
     <script src="filters/filter.component.js"></script>
     <script src="filters/filter-list.component.js"></script>
     <script src="filters/filter-option-range.component.js"></script>
+
+    <script src="chips/chips.component.js"></script>
 </head>
 <body>
 
@@ -153,6 +179,9 @@
     </div>
     <div style="display: inline-block; vertical-align: top; width: 250px; height: 600px">
         <pxbo-filter-list filters="filtersModel" on-change="filtersChanged(filters)"></pxbo-filter-list>
+    </div>
+    <div>
+        <pxbo-chips chips="chipsModel"></pxbo-chips>
     </div>
     <div>
         <textarea disabled id="result" style="width: 300px; height: 500px"></textarea>

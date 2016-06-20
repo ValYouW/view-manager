@@ -7,7 +7,7 @@
 		this.multi = typeof multi === 'boolean' ? multi : true;
 		this.dataType = dataType || 'String';
 		this.selectionState = selectionState || 'None';
-		this.options = options || [];
+		this.options = options || {};
 	}
 
 	function FilterListController() {
@@ -26,7 +26,9 @@
 			for (var i = 0; i < this.filters.length; ++i) {
 				var currFilter = this.filters[i];
 				var f = new FilterModel(currFilter.id, currFilter.text, !!currFilter.multi, currFilter.dataType, null, currFilter.selectionState);
-				if (angular.isArray(currFilter.options) && currFilter.options.length > 1) {
+
+				// Clone options
+				if (typeof currFilter.options === 'object' && currFilter.options) {
 					angular.merge(f.options, currFilter.options);
 				}
 
@@ -62,7 +64,13 @@
 		var filters = [];
 		for (var i = 0; i < this.filters.length; ++i) {
 			var currFilter = this.filters[i];
-			var selection = currFilter.options.map(function(o) {return o.selected && {id: o.id, value: o.value};}).filter(Boolean);
+			var selection = [];
+			for (var optId in currFilter.options) {
+				if (currFilter.options[optId].selected) {
+					selection.push({id: optId, value: currFilter.options[optId].value});
+				}
+			}
+
 			if (selection.length > 0) {
 				filters.push({id: currFilter.id, selection: selection});
 			}
