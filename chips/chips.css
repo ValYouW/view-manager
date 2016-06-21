@@ -1,0 +1,31 @@
+.chips {
+	background-color: #edf6fa;
+	font-size: 0.75em;
+}
+
+.chips .chips-label {
+	padding-left: .2em;
+	display: inline-block;
+}
+
+.chips .chips-node {
+	display: inline-block;
+	padding: 0.334em;
+}
+
+/* reset a tag */
+.chips a:hover,
+.chips a:focus,
+.chips a:active {
+	color: inherit;
+	text-decoration: inherit;
+}
+
+.chips a {
+	opacity: .4;
+}
+
+.chips a:hover {
+	opacity: .6;
+	cursor: pointer;
+}

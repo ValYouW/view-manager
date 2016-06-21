@@ -18,19 +18,27 @@
         myApp.controller('viewMgrAppCtrl', function($scope, $timeout) {
             $scope.viewMgrApi = {};
             $scope.viewMgrApi.onSave = function(data) {
-                var resDiv = document.getElementById('result');
+                var resDiv = document.getElementById('viewMgrResult');
                 resDiv.innerHTML = JSON.stringify(data, null, 2);
-                //resDiv.innerHTML = JSON.stringify(data, null, 2).replace(/\n/g, '<br />');
             };
 
             $scope.viewsMgrModel = getViewsMgrModel();
             $scope.filtersModel = getFiltersModel();
-            $scope.chipsModel = getChipsModel($scope.filtersModel);
 
-            $scope.filtersChanged = function(data) {
+            $scope.filtersChanged = function(chgFilters) {
+                for (var filterId in $scope.filtersModel) {
+                    $scope.filtersModel[filterId].options.forEach(function(opt) {
+                        var chgOpt = (chgFilters[filterId] && chgFilters[filterId].options[opt.id]) ? chgFilters[filterId].options[opt.id] : null;
+                        opt.selected = !!(chgOpt && chgOpt.selected);
+                        if (opt.selected && chgOpt && chgOpt.value) {
+                            opt.value = {};
+                            angular.merge(opt.value, chgOpt.value);
+                        }
+                    });
+                }
+
                 var resDiv = document.getElementById('result');
-                resDiv.innerHTML = JSON.stringify(data, null, 2);
-                $scope.chipsModel = getChipsModel(data);
+                //resDiv.innerHTML = JSON.stringify(chgFilters, null, 2);
             };
 
             $timeout(function() {
@@ -98,59 +106,58 @@
                     id: 'country',
                     text: 'Country',
                     multi: true,
-                    options: {
-                        'IL': { id: 'IL', text: 'Israel', count: 10, selected: true },
-                        'GB': { id: 'GB', text: 'Great Britain', count: 5 },
-                        'US': { id: 'US', text: 'United States', count: 3, selected: true }
+                    options: [
+                        { id: 'IL', text: 'Israel', count: 10, selected: true },
+                        { id: 'GB', text: 'Great Britain', count: 5 },
+                        { id: 'US', text: 'United States', count: 3, selected: true }
 
-                    }
+                    ]
                 },
                 leadStatus: {
                     id: 'leadStatus',
                     text: 'Lead Status',
                     multi: true,
-                    options: {
-                        0: { id: '0', text: 'Trader', count: 150 },
-                        1: { id: '1', text: 'Potential', count: 3578 },
-                        2: { id: '2', text: 'Non Eligible', count: 0 }
-                    }
+                    options: [
+                        { id: '0', text: 'Trader', count: 150 },
+                        { id: '1', text: 'Potential', count: 3578 },
+                        { id: '2', text: 'Non Eligible', count: 0 }
+                    ]
                 },
                 BALANCE: {
                     id: 'BALANCE',
                     text: 'Balance',
                     multi: false,
                     dataType: 'Number',
-                    options: {
-                        '0-1000': { id: '0-1000' },
-                        '1000-5000': { id: '1000-5000' },
-                        '5000-20000': { id: '5000-20000' },
-                        Custom: { id: 'Custom', type: 'Range', value: { from: null, to: null } }
-                    }
+                    options: [
+                        { id: '0-1000' },
+                        { id: '1000-5000' },
+                        { id: '5000-20000' },
+                        { id: 'Custom', type: 'Range', value: { from: null, to: null } }
+                    ]
                 },
                 USER_CREATE_DATE: {
                     id: 'USER_CREATE_DATE',
                     text: 'User Creation',
                     multi: false,
                     dataType: 'Date',
-                    options: {
-                        'yesterday': { id: 'yesterday', text: 'Yesterday' },
-                        'lat7Days': { id: 'lat7Days', text: 'Last 7 Days', selected: true },
-                        'lastMonth': { id: 'lastMonth', text: 'Last Month' },
-                        'Custom': { id: 'Custom', type: 'Range', value: { from: '', to: '' } }
-                    }
+                    options: [
+                        { id: 'yesterday', text: 'Yesterday' },
+                        { id: 'lat7Days', text: 'Last 7 Days', selected: true },
+                        { id: 'lastMonth', text: 'Last Month' },
+                        { id: 'Custom', type: 'Range', value: { from: '', to: '' } }
+                    ]
                 }
             };
         }
 
-        function getChipsModel() {
-            var filters = getFiltersModel();
+        function getChipsModel(filters) {
             var res = [];
-            for (var i = 0; i < filters.length; ++i) {
-                var filter = filters[i];
+            for (var filterId in filters) {
+                var filter = filters[filterId];
 
                 // Check if any option is selected
-                for (var j = 0; j < filter.options.length; ++j) {
-                    var opt = filter.options[j];
+                for (var optId in filter.options) {
+                    var opt = filter.options[optId];
 
                     if (opt.selected) {
                         res.push({ id: filter.id, text: opt.text || opt.id });
@@ -170,21 +177,21 @@
     <script src="filters/filter-option-range.component.js"></script>
 
     <script src="chips/chips.component.js"></script>
+    <script src="filters/filter-chips.component.js"></script>
 </head>
 <body>
 
 <div ng-app="viewMgrApp" ng-controller="viewMgrAppCtrl" style="display: flex; flex-direction: row; justify-content: space-around">
-    <div style="display: inline-block; width: 400px;">
+    <div style="display: inline-block; width: 400px; height: 230px">
         <pxbo-view-mgr-drv api="viewMgrApi"></pxbo-view-mgr-drv>
+        <textarea disabled id="viewMgrResult" style="width: 300px; height: 300px"></textarea>
     </div>
     <div style="display: inline-block; vertical-align: top; width: 250px; height: 600px">
         <pxbo-filter-list filters="filtersModel" on-change="filtersChanged(filters)"></pxbo-filter-list>
     </div>
     <div>
-        <pxbo-chips chips="chipsModel"></pxbo-chips>
-    </div>
-    <div>
-        <textarea disabled id="result" style="width: 300px; height: 500px"></textarea>
+        <pxbo-filter-chips filters="filtersModel"></pxbo-filter-chips>
+        <textarea disabled id="result" style="width: 300px; height: 500px">{{filtersModel | json:2}}</textarea>
     </div>
 </div>
 </body>

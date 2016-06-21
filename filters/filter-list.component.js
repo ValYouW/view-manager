@@ -7,7 +7,7 @@
 		this.multi = typeof multi === 'boolean' ? multi : true;
 		this.dataType = dataType || 'String';
 		this.selectionState = selectionState || 'None';
-		this.options = options || {};
+		this.options = options || [];
 	}
 
 	function FilterListController() {
@@ -28,7 +28,7 @@
 				var f = new FilterModel(currFilter.id, currFilter.text, !!currFilter.multi, currFilter.dataType, null, currFilter.selectionState);
 
 				// Clone options
-				if (typeof currFilter.options === 'object' && currFilter.options) {
+				if (angular.isArray(currFilter.options)) {
 					angular.merge(f.options, currFilter.options);
 				}
 
@@ -61,18 +61,21 @@
 		}
 
 		// Create a list of active filters and raise event
-		var filters = [];
+		var filters = {};
 		for (var filterId in this.filters) {
 			var currFilter = this.filters[filterId];
-			var selection = [];
-			for (var optId in currFilter.options) {
-				if (currFilter.options[optId].selected) {
-					selection.push({id: optId, value: currFilter.options[optId].value});
-				}
-			}
+			var selection = {};
+			var hasSelection = false;
 
-			if (selection.length > 0) {
-				filters.push({id: currFilter.id, selection: selection});
+			currFilter.options.forEach(function(opt) {
+				if (opt.selected) {
+					hasSelection = true;
+					selection[opt.id] = { selected: true, value: opt.value || null };
+				}
+			});
+
+			if (hasSelection) {
+				filters[filterId] = { id: currFilter.id, options: selection };
 			}
 		}
 

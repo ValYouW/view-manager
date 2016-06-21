@@ -22,14 +22,14 @@
 			this.inputType = this.filter.multi ? 'checkbox' : 'radio';
 			this.filter.dataType = this.filter.dataType || 'String';
 
-			// Make sure we have options object
-			if (typeof this.filter.options !== 'object' || !this.filter.options) {
-				this.filter.options = {};
+			// Make sure we have options array
+			if (!angular.isArray(this.filter.options)) {
+				this.filter.options = [];
 			}
 
 			// Normalize options
-			for (var optId in this.filter.options) {
-				var opt = this.filter.options[optId];
+			for (var i = 0; i < this.filter.options.length; ++i) {
+				var opt = this.filter.options[i];
 
 				// Use the id as text if it's missing
 				opt.text = opt.text || opt.id;
@@ -70,34 +70,31 @@
 			// Check if this is the "ALL" checkbox
 			if (e.target && e.target.value === '_ALL_') {
 				// Set each option state to the "ALL" checkbox state and put it in the `selection` array if it is selected.
-				for (optId in this.filter.options) {
-					this.filter.options[optId].selected = e.target.checked;
-					if (this.filter.options[optId].selected) { selection.push(optId); }
-				}
+				selection = this.filter.options.map(function(opt) {
+					opt.selected = e.target.checked;
+					return opt.selected && opt.id; // If it is selected return its id, otherwise "false" which will get filtered
+				}).filter(Boolean);
 
 			// A regular option checkbox
 			} else {
-				// If not all checkboxes are the same it is necessarily mean that the "ALL" checkbox is not selected
-				if (this.isIndeterminate()) {
-					this.filter.selected = false;
+				// Loop over all options and put the selected ones in the `selection` array (also count how many total options we have)
+				selection = this.filter.options.map(function(opt) {
+					// If it is selected return its id, otherwise "false" which will get filtered
+					return opt.selected && opt.id;
+				}).filter(Boolean);
 
-				// All checkboxes are the same, set the "ALL" checkbox to be like them
-				} else {
-					this.filter.selected = this.filter.options[0] && this.filter.options[0].selected;
-				}
-
-				for (optId in this.filter.options) {
-					if (this.filter.options[optId].selected) { selection.push(optId); }
-				}
+				// Set the "header" checkbox to true if all possible options are selected
+				this.filter.selected = (selection.length === this.filter.options.length);
 			}
 
 		// Radios
 		} else {
 			// Need to update the selected option properties according to the radio selection (which is saved on this.filter.selected)
-			for (optId in this.filter.options) {
-				this.filter.options[optId].selected = (this.filter.selected === this.filter.options[optId].id);
-				if (this.filter.options[optId].selected) { selection.push(optId); }
-			}
+			var self = this;
+			selection = this.filter.options.map(function(opt) {
+				opt.selected = (self.filter.selected === opt.id);
+				return opt.selected && opt.id; // If it is selected return its id, otherwise "false" which will get filtered
+			}).filter(Boolean);
 		}
 
 		if (typeof this.onChange === 'function') {
@@ -106,16 +103,9 @@
 	};
 
 	FilterController.prototype.isIndeterminate = function() {
-		var firstSelected;
-		var i = 0;
-		for (var optId in this.filter.options) {
-			if (i === 0) {
-				firstSelected = this.filter.options[optId].selected;
-				++i;
-				continue;
-			}
-
-			if (this.filter.options[optId].selected !== firstSelected) {
+		// Check whether all options "selected" property is the same, so we compare all option's selected state to the first item
+		for (var i = 1; i < this.filter.options.length; ++i) {
+			if (this.filter.options[i].selected !== this.filter.options[0].selected) {
 				return true;
 			}
 		}
@@ -132,7 +122,7 @@
 		templateUrl: 'filters/filter.html'
 	});
 
-	angular.module('viewMgrApp').directive('ngIndeterminate', function($compile) {
+	angular.module('viewMgrApp').directive('ngIndeterminate', function() {
 		return {
 			restrict: 'A',
 			link: function(scope, element, attributes) {
@@ -142,5 +132,23 @@
 			}
 		};
 	});
+
+	//angular.module('viewMgrApp').filter('filterOptsToArr', function() {
+	//	return function(obj, limit) {
+	//		limit = (typeof limit != 'number') ? Infinity : limit;
+	//		var keys = Object.keys(obj);
+	//		if (keys.length < 1) {
+	//			return [];
+	//		}
+	//
+	//		var ret = [];
+	//		keys.sort();
+	//		for (var i = 0; i < keys.length && i < limit; ++i) {
+	//			ret.push(obj[keys[i]]);
+	//		}
+	//
+	//		return ret;
+	//	};
+	//});
 
 })(angular);
