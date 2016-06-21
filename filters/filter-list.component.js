@@ -12,6 +12,7 @@
 
 	function FilterListController() {
 		this.dirtyFilters = false;
+		this.filters = {};
 	}
 
 	/**
@@ -20,11 +21,11 @@
 	 */
 	FilterListController.prototype.$onChanges = function(changes) {
 		// Check if the 'filters' binding has changed
-		if (typeof changes.filters !== 'undefined' && this.filters) {
+		if (typeof changes.inFilters !== 'undefined' && this.inFilters) {
 			// Clone the filters array, we don't want to hold reference to the original object
 			var tmp = {};
-			for (var filterId in this.filters) {
-				var currFilter = this.filters[filterId];
+			for (var filterId in this.inFilters) {
+				var currFilter = this.inFilters[filterId];
 				var f = new FilterModel(currFilter.id, currFilter.text, !!currFilter.multi, currFilter.dataType, null, currFilter.selectionState);
 
 				// Clone options
@@ -84,7 +85,7 @@
 
 	angular.module('viewMgrApp').component('pxboFilterList', {
 		bindings: {
-			filters: '<',
+			inFilters: '<',
 			onChange: '&'
 		},
 		controller: FilterListController,

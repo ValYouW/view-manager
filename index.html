@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="chips/chips.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
 
     <script type="text/javascript">
         var myApp = angular.module('viewMgrApp', []);
@@ -37,12 +37,32 @@
                     });
                 }
 
-                var resDiv = document.getElementById('result');
-                //resDiv.innerHTML = JSON.stringify(chgFilters, null, 2);
+                // Since we are binding our components (filter/chips) to an object we have to change the entire object in order to force
+                // a call to $onChanges, this can be avoided if the components had provided API like the viewMgr component
+                var tmp = {};
+                angular.merge(tmp, $scope.filtersModel);
+                $scope.filtersModel = tmp;
+
+                $scope.chgFilters = chgFilters;
+            };
+
+            $scope.filterChipRemoved = function(filterId, optId) {
+                var filter = $scope.filtersModel[filterId];
+                if (!filter) { return; }
+                for (var i = 0; i < filter.options.length; ++i) {
+                    if (filter.options[i].id === optId) {
+                        filter.options[i].selected = false;
+                        break;
+                    }
+                }
+
+                var tmp = {};
+                angular.merge(tmp, $scope.filtersModel);
+                $scope.filtersModel = tmp;
             };
 
             $timeout(function() {
-                $scope.viewMgrApi.loadData($scope.viewsMgrModel);
+                ////$scope.viewMgrApi.loadData($scope.viewsMgrModel);
             }, 200);
         });
 
@@ -187,11 +207,14 @@
         <textarea disabled id="viewMgrResult" style="width: 300px; height: 300px"></textarea>
     </div>
     <div style="display: inline-block; vertical-align: top; width: 250px; height: 600px">
-        <pxbo-filter-list filters="filtersModel" on-change="filtersChanged(filters)"></pxbo-filter-list>
+        <pxbo-filter-list in-filters="filtersModel" on-change="filtersChanged(filters)"></pxbo-filter-list>
     </div>
     <div>
-        <pxbo-filter-chips filters="filtersModel"></pxbo-filter-chips>
-        <textarea disabled id="result" style="width: 300px; height: 500px">{{filtersModel | json:2}}</textarea>
+        <pxbo-filter-chips filters="filtersModel" on-remove="filterChipRemoved(filterId, optionId)"></pxbo-filter-chips>
+        <div>Filter Change:</div>
+        <textarea disabled id="chgFilters" style="width: 300px; height: 200px">{{chgFilters | json:2}}</textarea>
+        <div>All Filters:</div>
+        <textarea disabled id="allFilters" style="width: 300px; height: 200px">{{filtersModel | json:2}}</textarea>
     </div>
 </div>
 </body>

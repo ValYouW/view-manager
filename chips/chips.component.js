@@ -16,10 +16,34 @@
 		}
 	};
 
+	ChipsController.prototype.handleClick = function(ev) {
+		if (!ev || !ev.target || !ev.target.matches('.chips-remove')) {
+			return;
+		}
+
+		var chipIdAttr = ev.target.attributes.getNamedItem('data-chip-id');
+		if (!chipIdAttr || !chipIdAttr.value) {
+			console.error('Got a click event on chips-remove but no data-chip-id attribute found');
+			return;
+		}
+
+		var chipId = chipIdAttr.value;
+		for (var i = 0; i < this.chips.length; ++i) {
+			if (this.chips[i].id === chipId) {
+				var removed = this.chips.splice(i, 1);
+				if (typeof this.onRemove === 'function') {
+					this.onRemove({chip: removed[0]});
+				}
+
+				return;
+			}
+		}
+	};
+
 	angular.module('viewMgrApp').component('pxboChips', {
 		bindings: {
 			chips: '<',
-			onChange: '&'
+			onRemove: '&'
 		},
 		controller: ChipsController,
 		templateUrl: 'chips/chips.html'

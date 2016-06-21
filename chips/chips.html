@@ -1,6 +1,6 @@
-<div class="chips">
+<div class="chips" ng-click="$ctrl.handleClick($event)">
     <span ng-repeat="chip in $ctrl.chips" class="chips-node">
-        <a class="fa fa-times-circle"></a>
+        <a class="chips-remove fa fa-times-circle" data-chip-id="{{chip.id}}"></a>
         <label class="chips-label">{{chip.text}}</label>
     </span>
 </div>
